@@ -1,0 +1,14 @@
+@page "/"
+@inject NavigationManager Navigation
+
+@* Não quero exibir nada visualmente na página inicial *@
+@* quero apenas redirecionar pra outra página *@
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        @* Navegando pra outra página *@
+        Navigation.NavigateTo("/cursos");
+    }
+}

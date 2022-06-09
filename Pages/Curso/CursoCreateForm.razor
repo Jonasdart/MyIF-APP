@@ -1,0 +1,47 @@
+@page "/cursos/criar"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@using Dtos.Curso
+
+<PageTitle>Adicionar Cursos</PageTitle>
+
+<h3 class="text-2xl font-bold text-teal-600">Adicionar Curso</h3>
+
+<EditForm Model="@Curso" OnValidSubmit="@CriarCurso">
+
+    <label class="block mt-4">
+        <span class="text-gray-600">Nome</span>
+        <InputText @bind-Value="Curso.Nome" class="myif-form-input" />
+    </label>
+
+    <label class="block mt-4">
+        <span class="text-gray-600">Carga Horária</span>
+        <InputNumber min="1" @bind-Value="Curso.CargaHoraria" class="myif-form-input" />
+    </label>
+
+    <label class="block mt-4">
+        <span class="text-gray-600">Preço</span>
+        <InputNumber min="0" @bind-Value="Curso.Preco" class="myif-form-input" />
+    </label>
+
+    <label class="block mt-4">
+        <span class="text-gray-600">Descricao</span>
+        <InputTextArea @bind-Value="Curso.Descricao" class="myif-form-input" />
+    </label>
+
+    <button class="myif-button-submit">Salvar</button>
+
+</EditForm>
+
+@code
+{
+    //Propriedade que vai estar associada com o formulário
+    public CursoCreateUpdateDto Curso { get; set; } = new();
+
+    private async Task CriarCurso()
+    {
+        //Enviar a requisicao para a API salvar o curso
+        await Http.PostAsJsonAsync("/cursos", Curso);
+        Navigation.NavigateTo("/cursos");
+    }
+}

@@ -1,0 +1,62 @@
+@page "/cursos"
+@using Dtos.Curso
+@inject HttpClient Http
+
+<PageTitle>Cursos</PageTitle>
+
+<h3 class="text-2xl font-bold text-teal-600">Cursos</h3>
+
+<div class="flex justify-end">
+    <a href="/cursos/criar" class="not-prose myif-add-button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Adicionar curso
+    </a>
+</div>
+
+@if (Cursos is null)
+{
+    <p>Carregando...</p>
+}
+else
+{
+    <table class="myif-table">
+        <thead>
+            <tr class="myif-table-row-th">
+                <th class="px-4 py-3">Nome</th>
+                <th class="px-4 py-3">Carga Horária</th>
+                <th class="px-4 py-3">Preco</th>
+                <th class="px-4 py-3"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var curso in Cursos)
+            {
+                <tr>
+                    <td>@curso.Nome</td>
+                    <td>@curso.CargaHoraria hrs</td>
+                    <td>@curso.Preco.ToString("C")</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code
+{
+    private List<CursoResponseDto> Cursos { get; set; }
+
+    @* Colocar aqui dentro (tem que ser escrito dessa forma o método)
+        tudo que eu quiser que seja executado no momento que o componente (ou página)
+        for exibida pela primeira vez *@
+    protected override async Task OnInitializedAsync()
+    {
+        Cursos = await Http.GetFromJsonAsync<List<CursoResponseDto>>("/cursos");
+    }
+}
